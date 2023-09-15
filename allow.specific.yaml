@@ -1,0 +1,22 @@
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: all-from-specific
+  namespace: network-policy
+spec:
+  podSelector: 
+    matchLabels:
+      deployment: hello
+  policyTypes:
+    - Ingress
+  ingress:
+    - from:
+        - podSelector: 
+            matchLabels:
+              app: sample-app
+          namespaceSelector: 
+            matchLabels:
+              kubernetes.io/metadata.name: different-namespace
+      ports:
+        - protocol: TCP
+          port: 8080
